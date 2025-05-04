@@ -22,9 +22,14 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @PostMapping("/{cedula}")
-    public Optional<Ticket> addTicketUser(@PathVariable String cedula, @RequestBody Ticket ticket) {
-        return userService.addTicketUser(cedula,ticket);
+    @PostMapping("/update")
+    public Optional<User> updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
+    @PostMapping("/{cedula}/{id}")
+    public Optional<Ticket> addTicketUser(@PathVariable String cedula, @PathVariable int id) {
+        return userService.addTicketUser(cedula,id);
     }
 
     @GetMapping
@@ -45,12 +50,6 @@ public class UserController {
     @GetMapping("/email-existe")
     public boolean verifyEmail(@RequestParam String email) {
         return userService.existEmail(email);
-    }
-
-    @DeleteMapping("/{cedula}")
-    public Optional<User> updateUser(@PathVariable String cedula, @RequestBody User user) {
-        user.setCedula(cedula);
-        return userService.updateUser(user);
     }
 
     @GetMapping("/{cedula}/tickets")

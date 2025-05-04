@@ -40,6 +40,7 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+
     public Optional<User> updateUser(User user) {
         Optional<User> existingUser = userRepository.findById(user.getCedula());
         if (existingUser.isPresent()) {
@@ -54,18 +55,16 @@ public class UserService {
         return user.map(User::getTickets).orElse(Collections.emptyList());
     }
 
-    public Optional<Ticket> addTicketUser(String cedula, Ticket ticket) {
-        if (ticket != null) {
-            Optional<Ticket> existingTicket = ticketRepository.findById(ticket.getId());
-            Optional<User> existingUser = userRepository.findById(cedula);
-            if (existingUser.isPresent() && existingTicket.isPresent()) {
-                User user = existingUser.get();
-                ticket = existingTicket.get();
-                ticket.setUser(user);
-                user.getTickets().add(existingTicket.get());
-                userRepository.save(user);
-                return Optional.of(ticketRepository.save(ticket));
-            }
+    public Optional<Ticket> addTicketUser(String cedula, int id) {
+        Optional<Ticket> existingTicket = ticketRepository.findById(id);
+        Optional<User> existingUser = userRepository.findById(cedula);
+        if (existingUser.isPresent() && existingTicket.isPresent()) {
+            User user = existingUser.get();
+            Ticket ticket = existingTicket.get();
+            ticket.setUser(user);
+            user.getTickets().add(existingTicket.get());
+            userRepository.save(user);
+            return Optional.of(ticketRepository.save(ticket));
         }
         return Optional.empty();
     }

@@ -1,5 +1,6 @@
 package com.cristian.helpdesk.helpdesk.controller;
 
+import com.cristian.helpdesk.helpdesk.model.Status;
 import com.cristian.helpdesk.helpdesk.model.Ticket;
 import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.service.TicketService;
@@ -21,6 +22,16 @@ public class TicketController {
         return ticketService.saveTicket(ticket);
     }
 
+    @PostMapping("/update")
+    public Optional<Ticket> updateTicket(@RequestBody Ticket ticket) {
+        return ticketService.updateTicket(ticket);
+    }
+
+    @PostMapping("/{id}/{status}")
+    public Optional<Ticket> updateStatusTicket(@PathVariable int id, @PathVariable Status status) {
+        return ticketService.updateStatusTicket(id,status);
+    }
+
     @GetMapping
     public List<Ticket> getTickets() {
         return ticketService.listTicket();
@@ -34,12 +45,6 @@ public class TicketController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable int id) {
         ticketService.deleteTicket(id);
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Ticket> getTicketById(@PathVariable int id, @RequestBody Ticket ticket) {
-        ticket.setId(id);
-        return ticketService.updateTicket(ticket);
     }
 
 }
