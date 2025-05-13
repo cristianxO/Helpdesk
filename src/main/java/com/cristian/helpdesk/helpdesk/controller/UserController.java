@@ -1,5 +1,7 @@
 package com.cristian.helpdesk.helpdesk.controller;
 
+import com.cristian.helpdesk.helpdesk.dto.TicketDTO;
+import com.cristian.helpdesk.helpdesk.dto.UserDTO;
 import com.cristian.helpdesk.helpdesk.model.Ticket;
 import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.service.UserService;
@@ -18,27 +20,27 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public UserDTO createUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
     @PutMapping("/update")
-    public Optional<User> updateUser(@RequestBody User user) {
+    public Optional<UserDTO> updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
 
     @PatchMapping("/{cedula}/{id}")
-    public Optional<Ticket> addTicketUser(@PathVariable String cedula, @PathVariable int id) {
+    public Optional<TicketDTO> addTicketUser(@PathVariable String cedula, @PathVariable int id) {
         return userService.addTicketUser(cedula,id);
     }
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<UserDTO> getUsers() {
         return userService.listUser();
     }
 
     @GetMapping("/{cedula}")
-    public Optional<User> getUsersById(@PathVariable String cedula) {
+    public Optional<UserDTO> getUsersById(@PathVariable String cedula) {
         return userService.searchById(cedula);
     }
 
@@ -53,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/{cedula}/tickets")
-    public List<Ticket> getTicketsByUser(@PathVariable String cedula) {
+    public List<TicketDTO> getTicketsByUser(@PathVariable String cedula) {
         return userService.getTicketsByUserCedula(cedula);
     }
 }

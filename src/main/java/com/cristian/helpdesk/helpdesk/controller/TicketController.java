@@ -1,5 +1,6 @@
 package com.cristian.helpdesk.helpdesk.controller;
 
+import com.cristian.helpdesk.helpdesk.dto.TicketDTO;
 import com.cristian.helpdesk.helpdesk.model.Status;
 import com.cristian.helpdesk.helpdesk.model.Ticket;
 import com.cristian.helpdesk.helpdesk.model.User;
@@ -18,27 +19,27 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket) {
+    public TicketDTO createTicket(@RequestBody Ticket ticket) {
         return ticketService.createTicket(ticket);
     }
 
     @PutMapping("/update")
-    public Optional<Ticket> updateTicket(@RequestBody Ticket ticket) {
+    public Optional<TicketDTO> updateTicket(@RequestBody Ticket ticket) {
         return ticketService.updateTicket(ticket);
     }
 
     @PatchMapping("/{id}/{status}")
-    public Optional<Ticket> updateStatusTicket(@PathVariable int id, @PathVariable Status status) {
+    public Optional<TicketDTO> updateStatusTicket(@PathVariable int id, @PathVariable Status status) {
         return ticketService.updateStatusTicket(id,status);
     }
 
     @GetMapping
-    public List<Ticket> getTickets() {
+    public List<TicketDTO> getTickets() {
         return ticketService.listTicket();
     }
 
     @GetMapping("/{id}")
-    public Optional<Ticket> getTicketById(@PathVariable int id) {
+    public Optional<TicketDTO> getTicketById(@PathVariable int id) {
         return ticketService.searchById(id);
     }
 

@@ -1,5 +1,7 @@
 package com.cristian.helpdesk.helpdesk.service;
 
+import com.cristian.helpdesk.helpdesk.dto.DTOUtil;
+import com.cristian.helpdesk.helpdesk.dto.TicketDTO;
 import com.cristian.helpdesk.helpdesk.model.Status;
 import com.cristian.helpdesk.helpdesk.model.Ticket;
 import com.cristian.helpdesk.helpdesk.model.User;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketService {
@@ -25,44 +28,52 @@ public class TicketService {
     @Autowired
     private SecurityUtils securityUtils;
 
-    public Ticket createTicket(Ticket ticket) {
+    @Autowired
+    private DTOUtil dtoUtil;
+
+    public TicketDTO createTicket(Ticket ticket) {
         ticket.setStatus(Status.OPEN);
         ticket.setCreationDate(LocalDateTime.now());
         ticket.setCreator(userRepository.findByEmail(securityUtils.getEmailAuth()).get());
-        return ticketRepository.save(ticket);
+        ticketRepository.save(ticket);
+        return dtoUtil.convertTicketToDTO(ticket);
     }
 
-    public List<Ticket> listTicket() {
-        return ticketRepository.findAll();
+    public List<TicketDTO> listTicket() {
+        return ticketRepository.findAll().stream()
+                .map(ticket -> dtoUtil.convertTicketToDTO(ticket)).collect(Collectors.toList());
     }
 
-    public Optional<Ticket> searchById(int id) {
-        return ticketRepository.findById(id);
+    public Optional<TicketDTO> searchById(int id) {
+        return ticketRepository.findById(id)
+                .map(ticket -> dtoUtil.convertTicketToDTO(ticket));
     }
 
     public void deleteTicket(int id) {
         ticketRepository.deleteById(id);
     }
 
-    public Optional<Ticket> updateTicket(Ticket ticket) {
+    public Optional<TicketDTO> updateTicket(Ticket ticket) {
         Optional<Ticket> existingTicket = ticketRepository.findById(ticket.getId());
         if (existingTicket.isPresent()) {
             Ticket aux = existingTicket.get();
             aux.setPriority(ticket.getPriority());
             aux.setDescription(ticket.getDescription());
             aux.setTitle(ticket.getTitle());
-            return Optional.of(ticketRepository.save(aux));
+            ticketRepository.save(aux);
+            return Optional.of(dtoUtil.convertTicketToDTO(aux));
         }
         return Optional.empty();
     }
 
-    public Optional<Ticket> updateStatusTicket(int id, Status status) {
+    public Optional<TicketDTO> updateStatusTicket(int id, Status status) {
         if (securityUtils.isTecnico() || securityUtils.isAdmin()) {
             Optional<Ticket> existingTicket = ticketRepository.findById(id);
             if (existingTicket.isPresent()) {
                 Ticket ticket = existingTicket.get();
                 ticket.setStatus(status);
-                return Optional.of(ticketRepository.save(ticket));
+                ticketRepository.save(ticket);
+                return Optional.of(dtoUtil.convertTicketToDTO(ticket));
             }
         }
         return Optional.empty();
