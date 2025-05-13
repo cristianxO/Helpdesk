@@ -1,9 +1,8 @@
 package com.cristian.helpdesk.helpdesk;
 
-import com.cristian.helpdesk.helpdesk.model.Role;
-import com.cristian.helpdesk.helpdesk.model.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 

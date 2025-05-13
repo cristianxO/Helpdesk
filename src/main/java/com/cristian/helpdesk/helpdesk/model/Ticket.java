@@ -35,7 +35,12 @@ public class Ticket {
     private LocalDateTime creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "cedula_user", referencedColumnName = "cedula")
+    @JoinColumn(name = "nit_creator", referencedColumnName = "nit")
+    @JsonBackReference
+    private User creator;
+
+    @ManyToOne
+    @JoinColumn(name = "nit_user", referencedColumnName = "nit")
     @JsonBackReference
     private User user;
 }

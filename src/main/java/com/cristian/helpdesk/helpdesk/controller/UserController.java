@@ -22,12 +22,12 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Optional<User> updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
 
-    @PostMapping("/{cedula}/{id}")
+    @PatchMapping("/{cedula}/{id}")
     public Optional<Ticket> addTicketUser(@PathVariable String cedula, @PathVariable int id) {
         return userService.addTicketUser(cedula,id);
     }

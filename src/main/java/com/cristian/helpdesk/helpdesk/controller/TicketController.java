@@ -19,15 +19,15 @@ public class TicketController {
 
     @PostMapping
     public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.saveTicket(ticket);
+        return ticketService.createTicket(ticket);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Optional<Ticket> updateTicket(@RequestBody Ticket ticket) {
         return ticketService.updateTicket(ticket);
     }
 
-    @PostMapping("/{id}/{status}")
+    @PatchMapping("/{id}/{status}")
     public Optional<Ticket> updateStatusTicket(@PathVariable int id, @PathVariable Status status) {
         return ticketService.updateStatusTicket(id,status);
     }

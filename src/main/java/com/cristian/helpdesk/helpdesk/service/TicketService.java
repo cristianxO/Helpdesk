@@ -5,6 +5,7 @@ import com.cristian.helpdesk.helpdesk.model.Ticket;
 import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.repository.TicketRepository;
 import com.cristian.helpdesk.helpdesk.repository.UserRepository;
+import com.cristian.helpdesk.helpdesk.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,13 @@ public class TicketService {
     @Autowired
     private UserRepository userRepository;
 
-    public Ticket saveTicket(Ticket ticket) {
+    @Autowired
+    private SecurityUtils securityUtils;
+
+    public Ticket createTicket(Ticket ticket) {
         ticket.setStatus(Status.OPEN);
         ticket.setCreationDate(LocalDateTime.now());
+        ticket.setCreator(userRepository.findByEmail(securityUtils.getEmailAuth()).get());
         return ticketRepository.save(ticket);
     }
 
@@ -42,32 +47,23 @@ public class TicketService {
     public Optional<Ticket> updateTicket(Ticket ticket) {
         Optional<Ticket> existingTicket = ticketRepository.findById(ticket.getId());
         if (existingTicket.isPresent()) {
-            User user = ticket.getUser();
-            if (user != null && user.getCedula() != null) {
-                if (!user.getCedula().isEmpty()) {
-                    Optional<User> existingUser = userRepository.findById(ticket.getUser().getCedula());
-                    if (existingUser.isPresent()) {
-                        ticket.setStatus(existingTicket.get().getStatus());
-                        return Optional.of(ticketRepository.save(ticket));
-                    }else
-                        return Optional.empty();
-                }else
-                    return Optional.empty();
-            }else{
-                ticket.setUser(null);
-                ticket.setStatus(existingTicket.get().getStatus());
-                return Optional.of(ticketRepository.save(ticket));
-            }
+            Ticket aux = existingTicket.get();
+            aux.setPriority(ticket.getPriority());
+            aux.setDescription(ticket.getDescription());
+            aux.setTitle(ticket.getTitle());
+            return Optional.of(ticketRepository.save(aux));
         }
         return Optional.empty();
     }
 
     public Optional<Ticket> updateStatusTicket(int id, Status status) {
-        Optional<Ticket> existingTicket = ticketRepository.findById(id);
-        if (existingTicket.isPresent()) {
-            Ticket ticket = existingTicket.get();
-            ticket.setStatus(status);
-            return Optional.of(ticketRepository.save(ticket));
+        if (securityUtils.isTecnico() || securityUtils.isAdmin()) {
+            Optional<Ticket> existingTicket = ticketRepository.findById(id);
+            if (existingTicket.isPresent()) {
+                Ticket ticket = existingTicket.get();
+                ticket.setStatus(status);
+                return Optional.of(ticketRepository.save(ticket));
+            }
         }
         return Optional.empty();
     }

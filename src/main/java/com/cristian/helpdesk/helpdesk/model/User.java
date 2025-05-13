@@ -14,18 +14,22 @@ import java.util.List;
 public class User {
 
     @Id
-    private String cedula;
-
-    @Column(unique = true, nullable = false)
-    private String email;
+    private String nit;
 
     @Column(nullable = false)
     private String name;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Ticket> ticketsCreated;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
