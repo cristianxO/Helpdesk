@@ -1,6 +1,5 @@
 package com.cristian.helpdesk.helpdesk.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,11 +35,10 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "nit_creator", referencedColumnName = "nit")
-    @JsonBackReference
     private User creator;
 
     @ManyToOne
     @JoinColumn(name = "nit_user", referencedColumnName = "nit")
-    @JsonBackReference
+    //@JsonBackReference
     private User user;
 }

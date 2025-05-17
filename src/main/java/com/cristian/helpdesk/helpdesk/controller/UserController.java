@@ -2,13 +2,11 @@ package com.cristian.helpdesk.helpdesk.controller;
 
 import com.cristian.helpdesk.helpdesk.dto.TicketDTO;
 import com.cristian.helpdesk.helpdesk.dto.UserDTO;
-import com.cristian.helpdesk.helpdesk.model.Ticket;
 import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.TypeVariable;
 import java.util.List;
 import java.util.Optional;
 

@@ -27,16 +27,13 @@ public class UserService {
     private TicketRepository ticketRepository;
 
     @Autowired
-    private SecurityUtils securityUtils;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private DTOUtil dtoUtil;
 
     public UserDTO saveUser(User user) {
-        if (!userRepository.existsById(user.getNit()) && securityUtils.isAdmin()) {
+        if (!userRepository.existsById(user.getNit()) && SecurityUtils.isAdmin()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setTickets(null);
             user.setTicketsCreated(null);
@@ -58,7 +55,7 @@ public class UserService {
     }
 
     public void deleteUser(String cedula) {
-        if (securityUtils.isAdmin()) {
+        if (SecurityUtils.isAdmin()) {
             userRepository.deleteById(cedula);
         }
     }
@@ -72,7 +69,7 @@ public class UserService {
         Optional<User> existingUser = userRepository.findById(user.getNit());
         if (existingUser.isPresent()) {
             User aux = existingUser.get();
-            if (securityUtils.getEmailAuth().equals(aux.getEmail()) || securityUtils.isAdmin()) {
+            if (SecurityUtils.getEmailAuth().equals(aux.getEmail()) || SecurityUtils.isAdmin()) {
                 aux.setName(user.getName());
                 aux.setPassword(passwordEncoder.encode(user.getPassword()));
                 aux.setRole(user.getRole());
@@ -88,7 +85,7 @@ public class UserService {
     public List<TicketDTO> getTicketsByUserCedula(String cedula) {
         Optional<User> user = userRepository.findById(cedula);
         if (user.isPresent()) {
-            if (!securityUtils.isClient() || securityUtils.getEmailAuth().equals(user.get().getEmail())) {
+            if (!SecurityUtils.isClient() || SecurityUtils.getEmailAuth().equals(user.get().getEmail())) {
                 return user.map(aux -> dtoUtil.convertTicketsToDTO(aux.getTickets())).orElse(Collections.emptyList());
             }
         }

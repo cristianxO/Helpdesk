@@ -4,7 +4,6 @@ import com.cristian.helpdesk.helpdesk.dto.DTOUtil;
 import com.cristian.helpdesk.helpdesk.dto.TicketDTO;
 import com.cristian.helpdesk.helpdesk.model.Status;
 import com.cristian.helpdesk.helpdesk.model.Ticket;
-import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.repository.TicketRepository;
 import com.cristian.helpdesk.helpdesk.repository.UserRepository;
 import com.cristian.helpdesk.helpdesk.security.SecurityUtils;
@@ -26,15 +25,12 @@ public class TicketService {
     private UserRepository userRepository;
 
     @Autowired
-    private SecurityUtils securityUtils;
-
-    @Autowired
     private DTOUtil dtoUtil;
 
     public TicketDTO createTicket(Ticket ticket) {
         ticket.setStatus(Status.OPEN);
         ticket.setCreationDate(LocalDateTime.now());
-        ticket.setCreator(userRepository.findByEmail(securityUtils.getEmailAuth()).get());
+        ticket.setCreator(userRepository.findByEmail(SecurityUtils.getEmailAuth()).get());
         ticketRepository.save(ticket);
         return dtoUtil.convertTicketToDTO(ticket);
     }
@@ -67,7 +63,7 @@ public class TicketService {
     }
 
     public Optional<TicketDTO> updateStatusTicket(int id, Status status) {
-        if (securityUtils.isTecnico() || securityUtils.isAdmin()) {
+        if (SecurityUtils.isTecnico() || SecurityUtils.isAdmin()) {
             Optional<Ticket> existingTicket = ticketRepository.findById(id);
             if (existingTicket.isPresent()) {
                 Ticket ticket = existingTicket.get();

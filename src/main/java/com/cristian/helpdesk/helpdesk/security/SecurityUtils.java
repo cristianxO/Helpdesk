@@ -1,6 +1,5 @@
 package com.cristian.helpdesk.helpdesk.security;
 
-import com.cristian.helpdesk.helpdesk.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

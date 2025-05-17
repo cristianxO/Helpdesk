@@ -1,18 +1,14 @@
 package com.cristian.helpdesk.helpdesk.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.cristian.helpdesk.helpdesk.dto.AuthRequest;
 import com.cristian.helpdesk.helpdesk.dto.AuthResponse;
 import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.repository.UserRepository;
 import com.cristian.helpdesk.helpdesk.security.JwtUtil;
-import com.cristian.helpdesk.helpdesk.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service

@@ -3,7 +3,6 @@ package com.cristian.helpdesk.helpdesk.controller;
 import com.cristian.helpdesk.helpdesk.dto.TicketDTO;
 import com.cristian.helpdesk.helpdesk.model.Status;
 import com.cristian.helpdesk.helpdesk.model.Ticket;
-import com.cristian.helpdesk.helpdesk.model.User;
 import com.cristian.helpdesk.helpdesk.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

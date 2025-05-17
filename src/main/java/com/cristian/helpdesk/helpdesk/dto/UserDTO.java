@@ -1,8 +1,6 @@
 package com.cristian.helpdesk.helpdesk.dto;
 
 import com.cristian.helpdesk.helpdesk.model.Role;
-import com.cristian.helpdesk.helpdesk.model.Ticket;
-import com.cristian.helpdesk.helpdesk.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
